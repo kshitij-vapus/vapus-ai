@@ -76,3 +76,4 @@ apis/gen-go/apidocs.swagger.json
 
 
 .next/
+*.python-version
