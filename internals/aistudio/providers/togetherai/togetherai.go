@@ -39,6 +39,7 @@ type TogetherAIInterface interface {
 	GenerateTranscription(ctx context.Context, payload *prompts.AudioParams) error
 	GenerateTranslation(ctx context.Context, payload *prompts.AudioParams) error
 	CrawlModels(ctx context.Context) ([]*models.AIModelBase, error)
+	BuildReverseProxyHeaders() map[string]string
 }
 
 type TogetherAI struct {
@@ -134,4 +135,8 @@ func (o *TogetherAI) GenerateTranslation(ctx context.Context, payload *prompts.A
 		return o.OpenAI.GenerateTranslation(ctx, payload)
 	}
 	return apperr.ErrInvalidOrMissingPodelAPIKey
+}
+
+func (o *TogetherAI) BuildReverseProxyHeaders() map[string]string {
+	return nil
 }

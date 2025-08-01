@@ -42,6 +42,7 @@ type BedrockGenAIInterface interface {
 	ListInferenceProfiles(ctx context.Context) ([]*models.AIModelBase, error)
 	CrawlModels(ctx context.Context) ([]*models.AIModelBase, error)
 	GenerateImage(ctx context.Context, request *prompts.GenerativeImagePayload) error
+	BuildReverseProxyHeaders() map[string]string
 }
 
 type Bedrock struct {
@@ -414,5 +415,9 @@ func (x *Bedrock) GenerateContentStream(ctx context.Context, payload *prompts.Ge
 		}
 	}
 
+	return nil
+}
+
+func (x *Bedrock) BuildReverseProxyHeaders() map[string]string {
 	return nil
 }

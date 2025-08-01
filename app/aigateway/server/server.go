@@ -397,6 +397,12 @@ func NewAIGateway() *fiber.App {
 	app.Get("/metrics", monitor.New(monitor.Config{Title: "AI Gateway Metrics"}))
 	gtw := app.Group("/gateway")
 	chatRouter(gtw)
+
+	// route all direct agent API reverse proxy
+	agentGtw := app.Group("/agent/v1/*")
+	// agentReverseProxyRouter(agentGtw)
+	agentGtw.All("/*", agentReverseProxyRouter)
+
 	// app.All("/api/v1alpha1/*", adaptor.HTTPHandler(gwmux))
 	app.All("/api/v1alpha1/*", func(c *fiber.Ctx) error {
 		// log.Println("=============================================== 1111", string(c.Request().Header.Header()))
@@ -435,6 +441,7 @@ func bootStores(ctx context.Context, conf *appconfigs.VapusAISvcConfig) {
 		logger.Fatal().Err(dmstores.DMStoreManager.Error).Msg("error while initializing data stores.")
 	}
 	services.NewAIGatewayServices(dmstores.DMStoreManager)
+	services.NewAgentReverseProxyServices(dmstores.DMStoreManager)
 }
 
 func bootConnectionPool() {

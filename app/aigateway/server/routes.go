@@ -12,3 +12,7 @@ func chatRouter(x fiber.Router) {
 	x.Post("/v1/chat/completions", services.AIGatewayServicesManager.ChatCompletion)
 	// x.Post("/v1/tasks/logs", services.AIGatewayServicesManager.RunningTaskStream)
 }
+
+func agentReverseProxyRouter(c *fiber.Ctx) error {
+	return services.AgentReverseProxyManager.Do(c)
+}

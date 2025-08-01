@@ -28,6 +28,7 @@ type PerplexityInterface interface {
 	GenerateContent(ctx context.Context, payload *prompts.GenerativePrompterPayload) error
 	GenerateContentStream(ctx context.Context, request *prompts.GenerativePrompterPayload) error
 	CrawlModels(ctx context.Context) ([]*models.AIModelBase, error)
+	BuildReverseProxyHeaders() map[string]string
 }
 
 type Perplexity struct {
@@ -452,4 +453,8 @@ func (x *Perplexity) CrawlModels(ctx context.Context) ([]*models.AIModelBase, er
 		})
 	}
 	return result, nil
+}
+
+func (x *Perplexity) BuildReverseProxyHeaders() map[string]string {
+	return nil
 }

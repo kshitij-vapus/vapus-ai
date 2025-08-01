@@ -33,6 +33,7 @@ type AIModelNodeInterface interface {
 	GenerateContent(ctx context.Context, request *prompts.GenerativePrompterPayload) error
 	GenerateContentStream(ctx context.Context, request *prompts.GenerativePrompterPayload) error
 	CrawlModels(ctx context.Context) ([]*models.AIModelBase, error)
+	BuildReverseProxyHeaders() map[string]string
 }
 
 type AIModelNodeClient struct {

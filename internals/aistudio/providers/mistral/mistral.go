@@ -26,6 +26,7 @@ type MistralInterface interface {
 	GenerateContentStream(ctx context.Context, request *prompts.GenerativePrompterPayload) error
 	CrawlModels(ctx context.Context) ([]*models.AIModelBase, error)
 	FIM(ctx context.Context, payload *prompts.GenerativePrompterPayload, model string) error
+	BuildReverseProxyHeaders() map[string]string
 }
 
 type Mistral struct {
@@ -506,5 +507,9 @@ func (x *Mistral) FIM(ctx context.Context, payload *prompts.GenerativePrompterPa
 		Data:         resp.Object,
 		Role:         resp.Choices[0].Message.Role,
 	})
+	return nil
+}
+
+func (x *Mistral) BuildReverseProxyHeaders() map[string]string {
 	return nil
 }

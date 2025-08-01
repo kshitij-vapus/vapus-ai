@@ -25,6 +25,7 @@ type AnthropicAIInterface interface {
 	GenerateContent(ctx context.Context, request *prompts.GenerativePrompterPayload) error
 	GenerateContentStream(ctx context.Context, request *prompts.GenerativePrompterPayload) error
 	CrawlModels(ctx context.Context) ([]*models.AIModelBase, error)
+	BuildReverseProxyHeaders() map[string]string
 }
 
 type AnthropicAI struct {
@@ -39,9 +40,9 @@ const (
 )
 
 func New(ctx context.Context, node *models.AIModelNode, retries int, logger zerolog.Logger) (AnthropicAIInterface, error) {
-	// if node.NetworkParams.Url == "" {
-	// node.NetworkParams.Url = "https://api.anthropic.com"	// No need of URL
-	// }
+	if node.NetworkParams.Url == "" {
+		node.NetworkParams.Url = "https://api.anthropic.com"
+	}
 
 	token := ""
 	if node.GetCredentials("default") != nil {
@@ -319,5 +320,9 @@ func (o *AnthropicAI) GenerateContentStream(ctx context.Context, payload *prompt
 		payload.StudioLog.EndedAt = dmutils.GetMilliEpochTime()
 	}
 
+	return nil
+}
+
+func (o *AnthropicAI) BuildReverseProxyHeaders() map[string]string {
 	return nil
 }

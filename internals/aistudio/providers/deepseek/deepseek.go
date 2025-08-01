@@ -19,6 +19,7 @@ type DeepseekInterface interface {
 	GenerateTranscription(ctx context.Context, payload *prompts.AudioParams) error
 	GenerateTranslation(ctx context.Context, payload *prompts.AudioParams) error
 	CrawlModels(ctx context.Context) ([]*models.AIModelBase, error)
+	BuildReverseProxyHeaders() map[string]string
 }
 
 type Deepseek struct {
@@ -86,4 +87,8 @@ func (o *Deepseek) GenerateTranslation(ctx context.Context, payload *prompts.Aud
 		return o.OpenAI.GenerateTranslation(ctx, payload)
 	}
 	return apperr.ErrInvalidOrMissingPodelAPIKey
+}
+
+func (o *Deepseek) BuildReverseProxyHeaders() map[string]string {
+	return nil
 }

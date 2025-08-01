@@ -36,6 +36,7 @@ type OpenAIInterface interface {
 	GenerateContent(ctx context.Context, request *prompts.GenerativePrompterPayload) error
 	GenerateContentStream(ctx context.Context, request *prompts.GenerativePrompterPayload) error
 	CrawlModels(ctx context.Context) ([]*models.AIModelBase, error)
+	BuildReverseProxyHeaders() map[string]string
 }
 
 type OpenAI struct {
@@ -43,9 +44,10 @@ type OpenAI struct {
 }
 
 func New(ctx context.Context, node *models.AIModelNode, retries int, logger zerolog.Logger) (OpenAIInterface, error) {
-	// if node.NetworkParams.Url == "" {
-	// node.NetworkParams.Url = "https://api.openai.com/api/v1"
-	// }
+	if node.NetworkParams.Url == "" {
+		node.NetworkParams.Url = "https://api.openai.com/v1"
+	}
+
 	client, err := generic.New(ctx, node, retries, logger)
 	if err != nil {
 		return nil, err
@@ -87,4 +89,8 @@ func (o *OpenAI) CrawlModels(ctx context.Context) ([]*models.AIModelBase, error)
 		return o.OpenAI.CrawlModels(ctx)
 	}
 	return nil, apperr.ErrInvalidOrMissingPodelAPIKey
+}
+
+func (o *OpenAI) BuildReverseProxyHeaders() map[string]string {
+	return o.OpenAI.BuildReverseProxyHeaders()
 }

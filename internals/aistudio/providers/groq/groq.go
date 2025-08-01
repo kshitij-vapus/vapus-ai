@@ -37,6 +37,7 @@ type GroqAIInterface interface {
 	GenerateTranscription(ctx context.Context, payload *prompts.AudioParams) error
 	GenerateTranslation(ctx context.Context, payload *prompts.AudioParams) error
 	CrawlModels(ctx context.Context) ([]*models.AIModelBase, error)
+	BuildReverseProxyHeaders() map[string]string
 }
 
 type GroqAI struct {
@@ -156,4 +157,8 @@ func (o *GroqAI) GenerateEmbeddings(ctx context.Context, request *prompts.AIEmbe
 		return o.OpenAI.GenerateEmbeddings(ctx, request)
 	}
 	return apperr.ErrInvalidOrMissingPodelAPIKey
+}
+
+func (o *GroqAI) BuildReverseProxyHeaders() map[string]string {
+	return nil
 }

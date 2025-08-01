@@ -34,6 +34,7 @@ type OpenAIInterface interface {
 	CrawlModels(ctx context.Context) ([]*models.AIModelBase, error)
 	GenerateTranscription(ctx context.Context, payload *prompts.AudioParams) error
 	GenerateTranslation(ctx context.Context, payload *prompts.AudioParams) error
+	BuildReverseProxyHeaders() map[string]string
 }
 
 type OpenAI struct {
@@ -438,4 +439,10 @@ func (o *OpenAI) GenerateContentStream(ctx context.Context, payload *prompts.Gen
 		}
 	}
 	return nil
+}
+
+func (o *OpenAI) BuildReverseProxyHeaders() map[string]string {
+	headers := make(map[string]string)
+	headers["Authorization"] = "Bearer " + o.ModelNode.NetworkParams.Credentials.ApiToken
+	return headers
 }

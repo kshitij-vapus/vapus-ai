@@ -29,6 +29,7 @@ type GoogleGenAIInterface interface {
 	GenerateContent(ctx context.Context, request *prompts.GenerativePrompterPayload) error
 	GenerateContentStream(ctx context.Context, request *prompts.GenerativePrompterPayload) error
 	CrawlModels(ctx context.Context) ([]*models.AIModelBase, error)
+	BuildReverseProxyHeaders() map[string]string
 }
 
 type GoogleGenAI struct {
@@ -547,5 +548,9 @@ func (x *GoogleGenAI) ChatStream(ctx context.Context, payload *prompts.Generativ
 	fmt.Println("I am in Gemini beforeee UsageMetadata ===================>>>>")
 
 	payload.LogUsage(usageMetrics)
+	return nil
+}
+
+func (x *GoogleGenAI) BuildReverseProxyHeaders() map[string]string {
 	return nil
 }
